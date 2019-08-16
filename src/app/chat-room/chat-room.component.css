@@ -1,0 +1,119 @@
+/* div[ng-view]{
+    height: 100%;
+}
+
+[mat-fab] {
+    position: absolute;
+    right: 2%;
+    top: 35px;
+    z-index: 1;
+}
+
+html, body {
+    background: transparent;
+    height: 100vh;
+    margin: 0;
+    padding: 0;    
+} */
+
+.container
+{
+    flex-wrap: nowrap;
+    height: 100%;
+    width: 100%;
+    padding: 0 !important;
+    max-width: none;
+    background-color: white;
+}
+
+.flex-container
+{
+    height: calc(100% - 70px);
+}
+
+.header
+{
+    background-color:black;
+    width: 100%;
+    height: 65px;
+    display: flex;
+}
+
+.chat_room_title
+{
+    font-size: 20px;
+    font-weight: bold;
+    margin: 15px;
+    flex-grow: 1;
+    color: white;
+}
+
+.profile_button
+{
+    margin: auto;
+}
+
+.button
+{
+    margin: 15px;
+    color: white;
+}
+
+.chat-container {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    border-style: solid;
+    border-width: 1px;
+    background-color: white;
+}
+
+.user_list
+{
+    margin: 10px;
+    flex-grow: 1;
+    padding: 0px;
+    border: 2px solid;
+}
+
+.user_list_title
+{
+    margin: 5px 5px 0 10px;
+    font-size: 30px;
+}
+
+.main-card {
+    flex-grow: 2;
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    border: 2px solid;
+}
+
+.chat-list
+{
+    overflow: auto;
+    flex-grow: 2;
+}
+
+.chat-list-item {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    border-radius: 5px;
+    background-color: #E8EAF6;
+    text-align: left;
+}
+
+.chat-footer-container {
+    padding: 0 10px;
+}
+
+.chat-input {
+    padding-top: 20px;
+    padding-left: 20px;
+    width: 80%; 
+}
+
+.chat-notification {
+    text-align: center;
+}

@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="flex-container">
+    <header class="header">
+      <span class="chat_room_title">Fancy Chat Room</span>
+      <button mat-raised-button
+      color="primary"
+              class="profile_button"
+              (click)="viewProfile(logged_in_user, true)">
+        <span>{{logged_in_user.user_name}}</span>
+      </button>
+      <button mat-button
+              class="button"
+              (click)="logout()">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </header>
+
+    <div class="chat-container">
+      <mat-card class="user_list">
+        <mat-card-title class="user_list_title">User List</mat-card-title>
+        <mat-divider></mat-divider>
+        <mat-list *ngFor="let user of user_list">
+          <mat-list-item *ngIf="user" (click)="viewProfile(user)">{{user.user_name}}</mat-list-item>
+          <mat-divider></mat-divider>
+        </mat-list>
+      </mat-card>
+
+      <mat-card class="main-card">
+        <mat-list class="chat-list">
+          <mat-list-item class="chat-list-item" *ngFor="let message of messages">
+            <h4 mat-line *ngIf="message.action == undefined">
+              <b>{{message.from.user_name}}</b>
+            </h4>
+            <p *ngIf="message.action == undefined">
+              <span> {{message.content}} </span>
+            </p>
+            <p mat-line *ngIf="message.action == action.JOINED" class="chat-notification">
+              <span> <b>{{message.from.user_name}}</b> joined to the conversation. </span>
+            </p>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
+
+        <div class="chat-footer-container">
+          <mat-icon>message</mat-icon>
+          <mat-form-field class="chat-input">
+            <input matInput 
+                    #inputMessage 
+                    placeholder="Type your message" 
+                    [(ngModel)]="message_input" 
+                    (keyup.enter)="sendMessage(message_input)">
+          </mat-form-field>
+        </div>
+
+      </mat-card>
+    </div>
+  </div>
+</div>

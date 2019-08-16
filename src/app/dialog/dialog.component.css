@@ -1,0 +1,55 @@
+.container
+{
+  position: absolute;
+  top: 15%;
+  left: calc(50% - 240px);
+  max-width: 450px;
+  min-width: 400px;
+}
+
+.register-card
+{
+  background-color: #cccccc;
+}
+
+.edit_button
+{
+  margin-right: 10px;
+  position: absolute;
+  right: 0;
+}
+
+.form-group
+{
+  padding: 10px 0;
+  display: flex;
+}
+
+.form-group-item
+{
+  flex-grow: 1;
+}
+
+.update-button
+{
+  font-size: 12pt;
+}
+
+.input-area
+{
+  padding-right: 25px;
+  font-size: 12pt;
+  max-width: 280px;
+}
+
+.button-group
+{
+  padding-top: 10px;
+  text-align: right;
+}
+
+.error_msg
+{
+  color: red;
+  font-size: 10pt;
+}
