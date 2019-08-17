@@ -1,5 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChildren, ViewChild, QueryList, ElementRef } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
+import { MatList, MatListItem } from '@angular/material';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
@@ -22,6 +23,9 @@ import { DialogComponent } from '../dialog/dialog.component';
 })
 export class ChatRoomComponent implements OnInit
 {
+  // getting a reference to the overall list, which is the parent container of the list items
+  @ViewChild(MatList, {read: ElementRef, static: false }) matList: ElementRef;
+
   public messages: Message[] = [];
   public message_input: string;
   public action = Action;
@@ -46,6 +50,11 @@ export class ChatRoomComponent implements OnInit
 
   ngOnInit()
   {
+    // redirect to home if already logged in
+    if (!localStorage.getItem('token')) {
+      this.router.navigate(['/login']);
+    }
+
     this.initSocketConnection();
     this.getUserList();
     this.auth_service.getLoggedInUser().subscribe(data => 
@@ -60,13 +69,13 @@ export class ChatRoomComponent implements OnInit
     var msg = new Message(this.logged_in_user, message);
     this.socket_service.send(msg);
 
+    this.scrollToBottom();
     // Clean the input field
     this.message_input = null;
   }
 
   public viewProfile(user: User, edit: boolean = false): void
   {
-    console.log(user);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -86,16 +95,16 @@ export class ChatRoomComponent implements OnInit
             return;
           }
           // var user = this.profileDialogRef.componentInstance.getUser();
-          this.logged_in_user = data.user;
           this.user_service.updateUserInfo(user).subscribe(data =>
             {
-              if (data.message == "Success")
+              if (data.status == "Fail")
               {
-                this.toaster.success('Profile Update', 'Profile updated succesfully!');
+                this.toaster.error('Profile Update', 'Profile could not updated! Please try again.');
               }
               else
               {
-                this.toaster.error('Profile Update', 'Profile could not updated! Please try again.');
+                this.logged_in_user = data.user;
+                this.toaster.success('Profile Update', data.message);
               }
             });
         }
@@ -128,7 +137,6 @@ export class ChatRoomComponent implements OnInit
         }
       }
       this.messages.push(message);
-      console.log(message);
     });
 
     this.socket_service.onEvent(Connection.CONNECT)
@@ -175,5 +183,12 @@ export class ChatRoomComponent implements OnInit
       {
         this.user_list = data;
       })
+  }
+
+  // auto-scroll fix
+  // https://stackoverflow.com/questions/35232731/angular2-scroll-to-bottom-chat-style
+  private scrollToBottom(): void
+  {
+    this.matList.nativeElement.scrollTop = this.matList.nativeElement.scrollHeight;
   }
 }

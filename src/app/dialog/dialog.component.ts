@@ -12,7 +12,6 @@ import { UserService } from '../services/user.service';
 })
 export class DialogComponent implements OnInit
 {
-  // public edit: boolean;
   public edittable: boolean;
   public user: User;
   public items: Array<string>;
@@ -24,37 +23,20 @@ export class DialogComponent implements OnInit
               @Inject(MAT_DIALOG_DATA) public data: any,
               public user_service: UserService)
   {
-    console.log(data);
+    
     this.user = data.user;
-    this.edittable = data.edittable == 'true';
+    this.edittable = data.edittable;
   }
 
   ngOnInit()
   {
     this.items = this.user_service.getUserAttributes(this.user);
-    // this.edit = false;
-    // this.user = new User();
   }
 
   public hideItem(item: string): boolean
   {
     return (item == 'user_id');
   }
-
-  // public changeEdit(): void
-  // {
-  //   this.edit = !this.edit;
-  // }
-
-  // public setUser(user: User): void
-  // {
-  //   this.user = user;
-  // }
-
-  // public getUser(): User
-  // {
-  //   return this.user;
-  // }
 
   public onClose(success: boolean)
   {

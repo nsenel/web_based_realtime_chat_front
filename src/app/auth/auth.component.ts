@@ -30,14 +30,11 @@ export class AuthComponent implements OnInit
 
   public submitLogin(): void
   {
-    console.log(this.user)
     this.error_msg = "";
     this.auth_service.login(this.user).subscribe(data =>
       {
-        console.log(data)
         if (data.status == 'Success')
         {
-          console.log("Loged in");
           localStorage.setItem('token', data.auth_token);
           this.router.navigateByUrl("/chat");
         }

@@ -26,10 +26,6 @@ export class RegisterComponent implements OnInit {
                 private auth_service: AuthService,
                 public user_service: UserService)
     {
-        // redirect to home if already logged in
-        //if (this.auth_service.isLoggedIn) {
-        //    this.router.navigate(['/']);
-       // }
     }
 
     ngOnInit()

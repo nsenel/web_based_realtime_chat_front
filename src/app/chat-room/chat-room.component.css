@@ -74,6 +74,7 @@ html, body {
     flex-grow: 1;
     padding: 0px;
     border: 2px solid;
+    overflow-x: auto;
 }
 
 .user_list_title

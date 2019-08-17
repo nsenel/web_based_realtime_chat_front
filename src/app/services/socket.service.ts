@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-
 import { Observer, Observable } from 'rxjs';
+
+import { environment } from '../../environments/environment';
 import { Message } from '../models/message.model';
 import { Connection } from '../models/connection.model';
 import { UserAction } from '../models/action.model';
@@ -8,7 +9,7 @@ import { UserAction } from '../models/action.model';
 import * as socketIo from 'socket.io-client';
 // const io = require('socket.io')(http);
 
-const SERVER_URL = 'https://boiling-plains-77861.herokuapp.com';
+const SERVER_URL = environment.server_url;
 
 @Injectable({
   providedIn: 'root'
@@ -24,21 +25,20 @@ export class SocketService {
   }
 
   public send(message: Message): void {
-    console.log(message);
       this.socket.emit('message', message);
   }
 
   public onMessage(): Observable<Message>
   {
     return new Observable<Message>(observer => {
-      this.socket.on('message', (data: Message) => {observer.next(data);console.log(data);});
+      this.socket.on('message', (data: Message) => observer.next(data));
     });
   }
 
   public onUserAction(): Observable<Message>
   {
     return new Observable<UserAction>(observer => {
-      this.socket.on('user_action', (data: UserAction) => {observer.next(data);console.log(data);});
+      this.socket.on('user_action', (data: UserAction) => observer.next(data));
     });
   }
 

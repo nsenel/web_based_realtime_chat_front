@@ -4,7 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 
 import { User } from '../models/user.model';
-import { Room } from '../models/room.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +14,12 @@ export class Response
 {
   status: string;
   message: string;
+  user?: User
 }
 
 export class UserService
 {
-  // Define API
-  private apiURL = 'https://boiling-plains-77861.herokuapp.com/auth';
+  private  SERVER_URL = environment.server_url + "/auth";
   // Http Options
   private headers: HttpHeaders;
 
@@ -31,7 +31,7 @@ export class UserService
 
   public getUserList(): Observable<Array<User>>
   {
-    return this.http.get<Array<User>>(this.apiURL + '/user_list', {headers: this.headers})
+    return this.http.get<Array<User>>(this.SERVER_URL + '/user_list', {headers: this.headers})
     .pipe(
       retry(1),
       catchError(this.handleError)
@@ -42,7 +42,7 @@ export class UserService
   // {
   //   this.headers.append('username', username);
 
-  //   return this.http.get<User>(this.apiURL + '/user_info', {headers: this.headers})
+  //   return this.http.get<User>(this.server_url + '/user_info', {headers: this.headers})
   //   .pipe(
   //     retry(1),
   //     catchError(this.handleError)
@@ -51,7 +51,9 @@ export class UserService
 
   public updateUserInfo(user: User): Observable<Response>
   {
-    return this.http.post<Response>(this.apiURL + '/user_info', user, {headers: this.headers})
+    var data = {'Authorization': 'chat_token ' + localStorage.getItem('token'),
+                'user': user};
+    return this.http.post<Response>(this.SERVER_URL + '/user_info', data, {headers: this.headers})
     .pipe(
       retry(1),
       catchError(this.handleError)
@@ -60,7 +62,7 @@ export class UserService
 
   public getChatRoomList(): Observable<Response>
   {
-    return this.http.get<Response>(this.apiURL + '/chat_room_list', {headers: this.headers})
+    return this.http.get<Response>(this.SERVER_URL + '/chat_room_list', {headers: this.headers})
     .pipe(
       retry(1),
       catchError(this.handleError)

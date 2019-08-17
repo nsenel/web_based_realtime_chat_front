@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
-
+import { environment } from '../../environments/environment';
 import { User } from '../models/user.model';
 
 @Injectable({
@@ -20,14 +20,7 @@ export class Response
 export class AuthService
 {
   // Define API
-  apiURL = 'https://boiling-plains-77861.herokuapp.com/auth';
-
-  // Http Options
-  // public httpOptions = {
-  //   headers: new HttpHeaders({
-  //     'Content-Type':  'application/json'
-  //   })
-  // };
+  private  SERVER_URL = environment.server_url + "/auth";
 
   public headers: HttpHeaders = new HttpHeaders();
   public isLoggedIn: boolean;
@@ -35,17 +28,19 @@ export class AuthService
   constructor(private http: HttpClient)
   {
     this.headers.set('Content-Type',  'application/json');
-    // this.headers.set("Access-Control-Allow-Origin", "*")
-    // this.headers.set("Access-Control-Allow-Methods", "DELETE, POST, GET, OPTIONS")
-    // this.headers.set("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With")
     this.isLoggedIn = true;
+  }
+
+  public setLoggedInFlag(isLoggedIn: boolean): void
+  {
+    this.isLoggedIn = isLoggedIn;
   }
 
   // HttpClient API get() method => Fetch employees list
   public login(user: User): Observable<Response>
   {
     var httpOptions = {headers: this.headers};
-    return this.http.post<Response>(this.apiURL + '/login', user, httpOptions)
+    return this.http.post<Response>(this.SERVER_URL + '/login', user, httpOptions)
     .pipe(
       retry(1),
       catchError(this.handleError)
@@ -56,7 +51,7 @@ export class AuthService
   public register(user: User): Observable<Response>
   {
     var httpOptions = {headers: this.headers};
-    return this.http.post<Response>(this.apiURL + '/register', user, httpOptions)
+    return this.http.post<Response>(this.SERVER_URL + '/register', user, httpOptions)
     .pipe(
       retry(1),
       catchError(this.handleError)
@@ -68,7 +63,7 @@ export class AuthService
     var auth_token = {'Authorization': 'chat_token ' + localStorage.getItem('token')};
     var httpOptions = {headers: this.headers};
 
-    return this.http.post<User>(this.apiURL + '/status', auth_token, httpOptions)
+    return this.http.post<User>(this.SERVER_URL + '/status', auth_token, httpOptions)
     .pipe(
       retry(1),
       catchError(this.handleError)
@@ -79,7 +74,7 @@ export class AuthService
   {
     var auth_token = {'Authorization': 'chat_token ' + localStorage.getItem('token')};
     var httpOptions = {headers: this.headers};
-    return this.http.post<Response>(this.apiURL + '/logout', auth_token, httpOptions)
+    return this.http.post<Response>(this.SERVER_URL + '/logout', auth_token, httpOptions)
     .pipe(
       retry(1),
       catchError(this.handleError)

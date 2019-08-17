@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  // url for connecting to REST web server (testing on localhost)
+  server_url: 'https://boiling-plains-77861.herokuapp.com' // Disable this line to use local testing
+  // server_url: 'http://localhost:5000', // Able this line to use local testing
 };
 
 /*
