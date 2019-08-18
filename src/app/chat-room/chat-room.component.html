@@ -40,7 +40,7 @@
                 *ngIf="message.action == undefined">
               <b>{{message.from.user_name}}</b>
             </h4>
-            <p class="nowrap"
+            <p class="nowrap auto-margin"
                *ngIf="message.action == undefined">
               <span>{{message.content}}</span>
             </p>
@@ -59,7 +59,6 @@
         </mat-list>
 
         <div class="chat-footer-container">
-          <mat-icon>message</mat-icon>
           <mat-form-field class="chat-input">
             <input matInput 
                     #message 
@@ -69,6 +68,8 @@
                     (keyup.enter)="sendMessage(message_input)">
             <mat-hint align="end">max 50 char</mat-hint>
           </mat-form-field>
+          <mat-icon (click)="sendMessage(message_input)"
+                    class="send_msg">send</mat-icon>
         </div>
 
       </mat-card>

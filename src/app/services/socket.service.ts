@@ -7,7 +7,6 @@ import { Connection } from '../models/connection.model';
 import { UserAction } from '../models/action.model';
 
 import * as socketIo from 'socket.io-client';
-// const io = require('socket.io')(http);
 
 const SERVER_URL = environment.server_url;
 

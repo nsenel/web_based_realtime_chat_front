@@ -3,6 +3,11 @@
     white-space: nowrap;
 }
 
+.auto-margin
+{
+    margin: auto;
+}
+
 .container
 {
     flex-wrap: nowrap;
@@ -110,4 +115,10 @@
 
 .chat-notification {
     text-align: center;
+}
+
+.send_msg
+{
+    cursor: pointer;
+    margin-left: 10px;
 }

@@ -33,6 +33,7 @@
   padding-right: 25px;
   font-size: 12pt;
   max-width: 280px;
+  flex-grow: 2;
 }
 
 .button-group

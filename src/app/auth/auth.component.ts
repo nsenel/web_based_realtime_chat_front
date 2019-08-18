@@ -16,8 +16,6 @@ export class AuthComponent implements OnInit
   public loginForm = new FormControl('');
   public user: User;
   public error_msg: string;
-  public icon_name = "visibility";
-  public password_type = "password";
 
   constructor(private auth_service: AuthService,
               private router: Router)
@@ -43,6 +41,7 @@ export class AuthComponent implements OnInit
         else
         {
           this.error_msg = data.message;
+          console.log(data.message);
         }
       })
   }
@@ -51,20 +50,5 @@ export class AuthComponent implements OnInit
   {
     this.router.navigateByUrl("/register");
   }
-
-  public showPassword(): void
-  {
-    if (this.password_type == "text")
-    {
-      this.password_type = "password";
-      this.icon_name = "visibility"
-    }
-    else
-    {
-      this.password_type = "text";
-      this.icon_name = "visibility_off"
-    }
-  }
-
 
 }

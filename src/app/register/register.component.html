@@ -11,11 +11,29 @@
               class="form-group">
             <mat-label class="form-group-item"
                         for="item">{{user_service.fixName(item)}}</mat-label>
-            <input type="typeof item"
+            <input matInput
+                  type="typeof item"
+                  *ngIf="item != 'user_password'"
+                  id="input-area"
                   class="input-area"
                   [(ngModel)]="user[item]"
                   name="item"
                   required>
+            <input matInput
+                  type="typeof item"
+                  *ngIf="item == 'user_password'"
+                  id="input-area"
+                  class="input-area"
+                  [(ngModel)]="user[item]"
+                  name="item"
+                  showHideInput
+                  required>
+            <i matSuffix
+              *ngIf="item == 'user_password'"
+              class="material-icons"
+              showHideTrigger="input-area"
+              [showHideStatus]="{ materialIcon: true, id: 'input-area' }">
+            </i>
           </div>
       </form>
     </mat-card-content>
