@@ -23,16 +23,23 @@
   flex-grow: 1;
 }
 
-.login-button
-{
-  font-size: 12pt;
-}
-
 .input-area
 {
+  flex-grow: 2;
   padding-right: 25px;
   font-size: 12pt;
   max-width: 280px;
+}
+
+.material-icons
+{
+  margin-left: -25px;
+}
+
+.button_error
+{
+  display: flex;
+  flex-direction: column;
 }
 
 .button-group
@@ -41,8 +48,16 @@
   text-align: right;
 }
 
+.button
+{
+  flex-grow: 1;
+  font-size: 12pt;
+}
+
 .error_msg
 {
+  flex-grow: 2;
   color: red;
   font-size: 10pt;
+  text-align: right;
 }

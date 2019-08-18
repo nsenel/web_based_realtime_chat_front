@@ -12,7 +12,7 @@
         <div class="form-group">
           <mat-label class="form-group-item"
                       for="user_mail">Mail Adress: </mat-label>
-          <input type="text"
+          <input matInput type="text"
                 class="input-area"
                 placeholder="enter user_mail"
                 [(ngModel)]="user.user_mail"
@@ -24,28 +24,36 @@
         <div class="form-group">
           <label class="form-group-item"
                   for="password">Password: </label>
-          <input type="password"
+          <input matInput
+                id="password_field"
+                type="password"
                 class="input-area"
                 placeholder="enter password"
                 [(ngModel)]="user.user_password"
                 name="user_password"
                 (keyup.enter)="submitLogin()"
+                showHideInput
                 required>
+          <i matSuffix
+            class="material-icons"
+            showHideTrigger="password_field"
+            [showHideStatus]="{ materialIcon: true, id: 'password_field' }"
+          ></i>
         </div>
       </form>
     </mat-card-content>
 
-    <mat-card-actions>
+    <mat-card-actions class="button_error">
+      <span class="error_msg">{{error_msg}}</span>
       <div class="button-group">
-        <span class="error_msg">{{error_msg}}</span>
         <button mat-raised-button
-                class="login-button"
+                class="button"
                 (click)="submitLogin()">
           Login
         </button>
         <button mat-raised-button
                 color="primary"
-                class="login-button"
+                class="button"
                 (click)="register()">
           Register
         </button>

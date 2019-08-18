@@ -22,13 +22,20 @@ export class AuthService
   // Define API
   private  SERVER_URL = environment.server_url + "/auth";
 
-  public headers: HttpHeaders = new HttpHeaders();
+  public headers: HttpHeaders;
+
   public isLoggedIn: boolean;
 
   constructor(private http: HttpClient)
   {
-    this.headers.set('Content-Type',  'application/json');
+    // this.headers.set('Content-Type',  'application/json');
     this.isLoggedIn = true;
+    this.headers = new HttpHeaders(
+      {
+        'Content-Type':  'application/json',
+        'Authorization': 'Token ' + localStorage.getItem('token')
+      }
+    );
   }
 
   public setLoggedInFlag(isLoggedIn: boolean): void
@@ -39,8 +46,7 @@ export class AuthService
   // HttpClient API get() method => Fetch employees list
   public login(user: User): Observable<Response>
   {
-    var httpOptions = {headers: this.headers};
-    return this.http.post<Response>(this.SERVER_URL + '/login', user, httpOptions)
+    return this.http.post<Response>(this.SERVER_URL + '/login', user, {headers: this.headers})
     .pipe(
       retry(1),
       catchError(this.handleError)
@@ -50,8 +56,7 @@ export class AuthService
   // HttpClient API get() method => Fetch employees list
   public register(user: User): Observable<Response>
   {
-    var httpOptions = {headers: this.headers};
-    return this.http.post<Response>(this.SERVER_URL + '/register', user, httpOptions)
+    return this.http.post<Response>(this.SERVER_URL + '/register', user, {headers: this.headers})
     .pipe(
       retry(1),
       catchError(this.handleError)
@@ -60,10 +65,7 @@ export class AuthService
 
   public getLoggedInUser(): Observable<User>
   {
-    var auth_token = {'Authorization': 'chat_token ' + localStorage.getItem('token')};
-    var httpOptions = {headers: this.headers};
-
-    return this.http.post<User>(this.SERVER_URL + '/status', auth_token, httpOptions)
+    return this.http.get<User>(this.SERVER_URL + '/status', {headers: this.headers})
     .pipe(
       retry(1),
       catchError(this.handleError)
@@ -72,9 +74,7 @@ export class AuthService
 
   public logout(): Observable<Response>
   {
-    var auth_token = {'Authorization': 'chat_token ' + localStorage.getItem('token')};
-    var httpOptions = {headers: this.headers};
-    return this.http.post<Response>(this.SERVER_URL + '/logout', auth_token, httpOptions)
+    return this.http.get<Response>(this.SERVER_URL + '/logout', {headers: this.headers})
     .pipe(
       retry(1),
       catchError(this.handleError)

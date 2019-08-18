@@ -25,8 +25,12 @@ export class UserService
 
   constructor(private http: HttpClient)
   {
-    this.headers = new HttpHeaders();
-    this.headers.append('Content-Type', 'application/json');
+    this.headers = new HttpHeaders(
+      {
+        'Content-Type':  'application/json',
+        'Authorization': 'Token ' + localStorage.getItem('token')
+      }
+    );
   }
 
   public getUserList(): Observable<Array<User>>
@@ -38,22 +42,9 @@ export class UserService
     )
   }
 
-  // public getUserInfo(username: string): Observable<User>
-  // {
-  //   this.headers.append('username', username);
-
-  //   return this.http.get<User>(this.server_url + '/user_info', {headers: this.headers})
-  //   .pipe(
-  //     retry(1),
-  //     catchError(this.handleError)
-  //   )
-  // }
-
   public updateUserInfo(user: User): Observable<Response>
   {
-    var data = {'Authorization': 'chat_token ' + localStorage.getItem('token'),
-                'user': user};
-    return this.http.post<Response>(this.SERVER_URL + '/user_info', data, {headers: this.headers})
+    return this.http.post<Response>(this.SERVER_URL + '/user_info', user, {headers: this.headers})
     .pipe(
       retry(1),
       catchError(this.handleError)

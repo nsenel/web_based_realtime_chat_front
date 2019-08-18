@@ -1,20 +1,7 @@
-/* div[ng-view]{
-    height: 100%;
+.nowrap
+{
+    white-space: nowrap;
 }
-
-[mat-fab] {
-    position: absolute;
-    right: 2%;
-    top: 35px;
-    z-index: 1;
-}
-
-html, body {
-    background: transparent;
-    height: 100vh;
-    margin: 0;
-    padding: 0;    
-} */
 
 .container
 {
@@ -83,8 +70,8 @@ html, body {
     font-size: 30px;
 }
 
-.main-card {
-    flex-grow: 2;
+.chat-card {
+    flex-grow: 3;
     display: flex;
     flex-direction: column;
     margin: 10px;
@@ -93,6 +80,7 @@ html, body {
 
 .chat-list
 {
+    max-height: 800px;
     overflow: auto;
     flex-grow: 2;
 }
@@ -102,6 +90,11 @@ html, body {
     margin-bottom: 2px;
     border-radius: 5px;
     background-color: #E8EAF6;
+    text-align: left;
+}
+
+.user
+{
     text-align: left;
 }
 

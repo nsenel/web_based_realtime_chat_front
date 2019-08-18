@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import { ChatRoomComponent } from './chat-room/chat-room.component';
 import { RegisterComponent } from './register/register.component';
 import { DialogComponent } from './dialog/dialog.component';
+import { ShowHidePasswordModule } from 'ngx-show-hide-password';
 import {
   MatButtonModule,
   MatFormFieldModule,
@@ -52,6 +53,7 @@ import {
     MatCardModule,
     MatTableModule,
     MatDialogModule,
+    ShowHidePasswordModule,
     ToastrModule.forRoot({
       timeOut: 10000,
       positionClass: 'toast-bottom-right',

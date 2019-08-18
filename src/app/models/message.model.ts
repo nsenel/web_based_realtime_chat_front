@@ -4,10 +4,10 @@ import { Action } from './action.model';
 export class Message
 {
   from?: User;
-  content?: any;
+  content?: string;
   action?: Action;
 
-  constructor(from?: User, content?: any, action?: Action)
+  constructor(from?: User, content?: string, action?: Action)
   {
     this.from = from;
     this.content = content;

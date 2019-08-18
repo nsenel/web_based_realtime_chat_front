@@ -24,7 +24,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 export class ChatRoomComponent implements OnInit
 {
   // getting a reference to the overall list, which is the parent container of the list items
-  @ViewChild(MatList, {read: ElementRef, static: false }) matList: ElementRef;
+  @ViewChild(MatList, {read: ElementRef, static: true }) matList: ElementRef;
 
   public messages: Message[] = [];
   public message_input: string;
@@ -56,11 +56,11 @@ export class ChatRoomComponent implements OnInit
     }
 
     this.initSocketConnection();
-    this.getUserList();
     this.auth_service.getLoggedInUser().subscribe(data => 
       {
         this.logged_in_user = data;
         this.sendNotification(Action.JOINED);
+        this.getUserList();
       });
   }
 
@@ -129,14 +129,13 @@ export class ChatRoomComponent implements OnInit
       {
         this.user_list.push(message.user);
       }
-      else
+      else if (message.action == Action.LEFT)
       {
         var index = this.user_list.indexOf(message.user);
         if (index > -1) {
           this.user_list.splice(index, 1);
         }
       }
-      this.messages.push(message);
     });
 
     this.socket_service.onEvent(Connection.CONNECT)
@@ -185,10 +184,8 @@ export class ChatRoomComponent implements OnInit
       })
   }
 
-  // auto-scroll fix
-  // https://stackoverflow.com/questions/35232731/angular2-scroll-to-bottom-chat-style
   private scrollToBottom(): void
   {
-    this.matList.nativeElement.scrollTop = this.matList.nativeElement.scrollHeight;
+    this.matList.nativeElement.scrollTo(0, this.matList.nativeElement.clientHeight);
   }
 }
