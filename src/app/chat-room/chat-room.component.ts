@@ -159,17 +159,17 @@ export class ChatRoomComponent implements OnInit
       });
   }
 
+  public scrollToBottom(): void
+  {
+    var chat_field = document.getElementById('chat-list');
+    chat_field.scrollTop = chat_field.scrollHeight;
+  }
+
   private getUserList(): void
   {
     this.user_service.getUserList().subscribe(data =>
       {
         this.user_list = data;
       })
-  }
-
-  private scrollToBottom(): void
-  {
-    var chat_field = document.getElementById('chat-list');
-    chat_field.scrollTop = chat_field.scrollHeight;
   }
 }
