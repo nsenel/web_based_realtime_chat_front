@@ -56,6 +56,7 @@ export class ChatRoomComponent implements OnInit
     }
     this.auth_service.getLoggedInUser().subscribe(data => 
       {
+        console.log('status call result: ',data)
         this.logged_in_user = data;
         this.initSocketConnection();
         this.getUserList();
@@ -112,6 +113,7 @@ export class ChatRoomComponent implements OnInit
   }
 
   private initSocketConnection(): void {
+    console.log('initSocketConnection; ', this.logged_in_user)
     this.socket_service.initSocket(this.logged_in_user.user_id);
 
     this.socket_connection = this.socket_service.onMessage()
