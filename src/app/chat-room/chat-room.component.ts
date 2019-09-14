@@ -54,12 +54,10 @@ export class ChatRoomComponent implements OnInit
     if (!localStorage.getItem('token')) {
       this.router.navigate(['/login']);
     }
-
-    this.initSocketConnection();
     this.auth_service.getLoggedInUser().subscribe(data => 
       {
         this.logged_in_user = data;
-        this.sendNotification(Action.JOINED);
+        this.initSocketConnection();
         this.getUserList();
       });
   }
@@ -68,8 +66,6 @@ export class ChatRoomComponent implements OnInit
   {
     var msg = new Message(this.logged_in_user, message);
     this.socket_service.send(msg);
-
-    this.scrollToBottom();
     // Clean the input field
     this.message_input = null;
   }
@@ -116,7 +112,7 @@ export class ChatRoomComponent implements OnInit
   }
 
   private initSocketConnection(): void {
-    this.socket_service.initSocket();
+    this.socket_service.initSocket(this.logged_in_user.user_id);
 
     this.socket_connection = this.socket_service.onMessage()
       .subscribe((message: Message) => {
@@ -125,42 +121,30 @@ export class ChatRoomComponent implements OnInit
 
     this.socket_connection = this.socket_service.onUserAction()
     .subscribe((message: UserAction) => {
-      if (message.action == Action.JOINED)
+
+      if (message.action == Action.JOINED) // Remove user from current connected user list
       {
         this.user_list.push(message.user);
       }
-      else if (message.action == Action.LEFT)
+      else if (message.action == Action.LEFT) // Remove user from current connected user list
       {
-        var index = this.user_list.indexOf(message.user);
-        if (index > -1) {
-          this.user_list.splice(index, 1);
-        }
+        this.user_list = this.user_list.filter(user => user.user_name !== message.user.user_name);
       }
+      this.sendNotification(message);
     });
-
-    this.socket_service.onEvent(Connection.CONNECT)
-      .subscribe(() => {
-        console.log('connected');
-      });
-
-    this.socket_service.onEvent(Connection.DISCONNECT)
-      .subscribe(() => {
-        console.log('disconnected');
-      });
   }
 
-  public sendNotification(action: Action): void {
+  public sendNotification(user_action: UserAction): void {
     var message: Message;
 
-    if (action == Action.JOINED || action == Action.LEFT)
+    if (user_action.action == Action.JOINED || user_action.action == Action.LEFT)
     {
       message = {
-        from: this.logged_in_user,
-        action: action
+        from: user_action.user,
+        action: user_action.action
       }
+      this.messages.push(message);
     }
-
-    this.socket_service.send(message);
   }
 
   public logout(): void
@@ -170,7 +154,6 @@ export class ChatRoomComponent implements OnInit
         if (data.status == 'Success')
         {
           localStorage.removeItem('token');
-          this.sendNotification(Action.LEFT);
           this.router.navigateByUrl('/login');
         }
       });
@@ -186,6 +169,7 @@ export class ChatRoomComponent implements OnInit
 
   private scrollToBottom(): void
   {
-    this.matList.nativeElement.scrollTo(0, this.matList.nativeElement.clientHeight);
+    var chat_field = document.getElementById('chat-list');
+    chat_field.scrollTop = chat_field.scrollHeight;
   }
 }

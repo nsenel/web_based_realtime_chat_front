@@ -18,8 +18,9 @@ export class SocketService {
   private socket;
   constructor() { }
 
-  public initSocket(): void
+  public initSocket(user_id: Number): void
   {
+    this.socket = socketIo.connect(SERVER_URL + '/connect', {query: 'user_id='+ user_id});
     this.socket = socketIo(SERVER_URL);
   }
 
@@ -37,14 +38,7 @@ export class SocketService {
   public onUserAction(): Observable<Message>
   {
     return new Observable<UserAction>(observer => {
-      this.socket.on('user_action', (data: UserAction) => observer.next(data));
-    });
-  }
-
-  public onEvent(event: Connection): Observable<any>
-  {
-    return new Observable<Event>(observer => {
-      this.socket.on(event, () => observer.next());
+      this.socket.on('user_action', (data: UserAction) => {console.log(data);observer.next(data)});
     });
   }
 }
