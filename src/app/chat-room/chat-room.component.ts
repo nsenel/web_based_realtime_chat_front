@@ -57,7 +57,7 @@ export class ChatRoomComponent implements OnInit
     this.auth_service.getLoggedInUser().subscribe(data => 
       {
         console.log('status call result: ',data)
-        this.logged_in_user = data;
+        this.logged_in_user = data[0];// Bad hack for heroku need to be fixed
         this.initSocketConnection();
         this.getUserList();
       });
@@ -113,7 +113,7 @@ export class ChatRoomComponent implements OnInit
   }
 
   private initSocketConnection(): void {
-    console.log('initSocketConnection; ', this.logged_in_user)
+    console.log('initSocketConnection; ', this.logged_in_user, 'this.logged_in_user.user_id: ', this.logged_in_user.user_id)
     this.socket_service.initSocket(this.logged_in_user.user_id);
 
     this.socket_connection = this.socket_service.onMessage()

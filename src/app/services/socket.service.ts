@@ -20,7 +20,7 @@ export class SocketService {
 
   public initSocket(user_id: Number): void
   {
-    console.log('user_id; ',user_id)
+    console.log('SocketServicd: initSocket() user_id; ',user_id)
     this.socket = socketIo.connect(SERVER_URL + '/connect', {query: 'user_id='+ user_id});
     this.socket = socketIo(SERVER_URL);
   }
