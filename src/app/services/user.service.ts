@@ -33,6 +33,9 @@ export class UserService
     );
   }
 
+  /**
+   * @description Get logged in user list
+   */
   public getUserList(): Observable<Array<User>>
   {
     return this.http.get<Array<User>>(this.SERVER_URL + '/user_list', {headers: this.headers})
@@ -42,6 +45,10 @@ export class UserService
     )
   }
 
+  /**
+   * @description Update logged in user information 
+   * @param user 
+   */
   public updateUserInfo(user: User): Observable<Response>
   {
     return this.http.post<Response>(this.SERVER_URL + '/user_info', user, {headers: this.headers})
@@ -51,6 +58,9 @@ export class UserService
     )
   }
 
+  /**
+   * @description Get chat room list
+   */
   public getChatRoomList(): Observable<Response>
   {
     return this.http.get<Response>(this.SERVER_URL + '/chat_room_list', {headers: this.headers})
@@ -60,17 +70,28 @@ export class UserService
     )
   }
 
+  /**
+   * @description Get user information attributes 
+   * @param user 
+   */
   public getUserAttributes(user: User): Array<string>
   {
     return Object.keys(user);
   }
 
+  /**
+   * @description Fix variable name  to split underscores
+   * @param name 
+   */
   public fixName(name: string): string
   {
     return name.split("_").join(" ");
   }
 
-  // Error handling 
+  /**
+   * @description Handle error 
+   * @param error 
+   */
   private handleError(error)
   {
     let errorMessage = '';

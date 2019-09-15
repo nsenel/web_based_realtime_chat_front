@@ -23,13 +23,13 @@ export class AuthService
   private  SERVER_URL = environment.server_url + "/auth";
 
   public headers: HttpHeaders;
-
   public isLoggedIn: boolean;
 
   constructor(private http: HttpClient)
   {
     // this.headers.set('Content-Type',  'application/json');
     this.isLoggedIn = true;
+    // Initialize httpHeaders with content type and authorization credentials
     this.headers = new HttpHeaders(
       {
         'Content-Type':  'application/json',
@@ -38,12 +38,20 @@ export class AuthService
     );
   }
 
+  /**
+   * @description Set logged in variable
+   * @param isLoggedIn
+   */
   public setLoggedInFlag(isLoggedIn: boolean): void
   {
     this.isLoggedIn = isLoggedIn;
   }
 
   // HttpClient API get() method => Fetch employees list
+  /**
+   * @description Login user with user information
+   * @param user 
+   */
   public login(user: User): Observable<Response>
   {
     return this.http.post<Response>(this.SERVER_URL + '/login', user, {headers: this.headers})
@@ -54,6 +62,10 @@ export class AuthService
   }
 
   // HttpClient API get() method => Fetch employees list
+  /**
+   * @description Register user with user information
+   * @param user 
+   */
   public register(user: User): Observable<Response>
   {
     return this.http.post<Response>(this.SERVER_URL + '/register', user, {headers: this.headers})
@@ -63,6 +75,9 @@ export class AuthService
     )
   }
 
+  /**
+   * @description Get logged in user information 
+   */
   public getLoggedInUser(): Observable<User>
   {
     return this.http.get<User>(this.SERVER_URL + '/status', {headers: this.headers})
@@ -72,6 +87,9 @@ export class AuthService
     )
   }
 
+  /**
+   * @description Log out user
+   */
   public logout(): Observable<Response>
   {
     return this.http.get<Response>(this.SERVER_URL + '/logout', {headers: this.headers})
@@ -81,7 +99,10 @@ export class AuthService
     )
   }
 
-  // Error handling 
+  /**
+   * @description Handle error
+   * @param error 
+   */
   private handleError(error)
   {
     let errorMessage = '';

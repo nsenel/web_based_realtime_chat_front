@@ -33,11 +33,19 @@ export class DialogComponent implements OnInit
     this.items = this.user_service.getUserAttributes(this.user);
   }
 
+  /**
+   * @description Hide user id information in user dialog
+   * @param item 
+   */
   public hideItem(item: string): boolean
   {
     return (item == 'user_id');
   }
 
+  /**
+   * @description Close dialog with success and logged in user information
+   * @param success 
+   */
   public onClose(success: boolean)
   {
     this.dialogRef.close({

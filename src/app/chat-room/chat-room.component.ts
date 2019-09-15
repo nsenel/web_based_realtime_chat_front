@@ -50,19 +50,24 @@ export class ChatRoomComponent implements OnInit
 
   ngOnInit()
   {
-    // redirect to home if already logged in
+    // redirect to home if user is already logged in
     if (!localStorage.getItem('token')) {
       this.router.navigate(['/login']);
     }
     this.auth_service.getLoggedInUser().subscribe(data => 
       {
-        console.log('status call result: ',data)
-        this.logged_in_user = data[0];// Bad hack for heroku need to be fixed
+        this.logged_in_user = data;
+        // Initialize socket connection
         this.initSocketConnection();
+        // Get logged in user list to show in user list on chat page
         this.getUserList();
       });
   }
 
+  /**
+   * @description Send user message to socket with user information
+   * @param message
+   */
   public sendMessage(message: string): void
   {
     var msg = new Message(this.logged_in_user, message);
@@ -71,6 +76,11 @@ export class ChatRoomComponent implements OnInit
     this.message_input = null;
   }
 
+  /**
+   * @description Show user dıalog to view profıles and edit own user profile
+   * @param user 
+   * @param edit 
+   */
   public viewProfile(user: User, edit: boolean = false): void
   {
     const dialogConfig = new MatDialogConfig();
@@ -83,6 +93,7 @@ export class ChatRoomComponent implements OnInit
     // Create loading dialog if it is not created before
     this.profileDialogRef = this.profileDialog.open(DialogComponent, dialogConfig);
 
+    // Check if thereis any data to save after closing profile dialog
     this.profileDialogRef.afterClosed().subscribe((data) =>
       {
         if (data.success)
@@ -112,15 +123,20 @@ export class ChatRoomComponent implements OnInit
       });
   }
 
+  /**
+   * @description Initialize socket connection to react on messages and actions
+   */
   private initSocketConnection(): void {
-    console.log('initSocketConnection; ', this.logged_in_user, 'this.logged_in_user.user_id: ', this.logged_in_user.user_id)
+    // Init socket with logged in user id
     this.socket_service.initSocket(this.logged_in_user.user_id);
 
+    // Push messages to message array when socket receives a message
     this.socket_connection = this.socket_service.onMessage()
       .subscribe((message: Message) => {
         this.messages.push(message);
       });
 
+    // Update user list regarding user action(add-remove user from list)
     this.socket_connection = this.socket_service.onUserAction()
     .subscribe((message: UserAction) => {
 
@@ -132,10 +148,15 @@ export class ChatRoomComponent implements OnInit
       {
         this.user_list = this.user_list.filter(user => user.user_name !== message.user.user_name);
       }
+      // Send notification message for each user action 
       this.sendNotification(message);
     });
   }
 
+  /**
+   * @description Send notifications of user actions and update messages array
+   * @param user_action 
+   */
   public sendNotification(user_action: UserAction): void {
     var message: Message;
 
@@ -149,6 +170,9 @@ export class ChatRoomComponent implements OnInit
     }
   }
 
+  /**
+   * @description Log out user with removing user token and navigate page 
+   */
   public logout(): void
   {
     this.auth_service.logout().subscribe(data =>
@@ -161,12 +185,18 @@ export class ChatRoomComponent implements OnInit
       });
   }
 
+  /**
+   * Scroll chat list to bottom toshow alwazs the latest message on the bottom
+   */
   public scrollToBottom(): void
   {
     var chat_field = document.getElementById('chat-list');
     chat_field.scrollTop = chat_field.scrollHeight;
   }
 
+  /**
+   * Get logged in user list 
+   */
   private getUserList(): void
   {
     this.user_service.getUserList().subscribe(data =>

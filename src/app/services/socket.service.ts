@@ -18,17 +18,27 @@ export class SocketService {
   private socket;
   constructor() { }
 
+  /**
+   * Inıt socket connection
+   * @param user_id 
+   */
   public initSocket(user_id: Number): void
   {
-    console.log('SocketServicd: initSocket() user_id; ',user_id)
     this.socket = socketIo.connect(SERVER_URL + '/connect', {query: 'user_id='+ user_id});
     this.socket = socketIo(SERVER_URL);
   }
 
+  /**
+   * @description Emit message to socket connection
+   * @param message 
+   */
   public send(message: Message): void {
-      this.socket.emit('message', message);
+    this.socket.emit('message', message);
   }
 
+  /**
+   * @description Get message on socket and send message to observer
+   */
   public onMessage(): Observable<Message>
   {
     return new Observable<Message>(observer => {
@@ -36,10 +46,13 @@ export class SocketService {
     });
   }
 
+  /**
+   * @description Get action on socket and send message to observer
+   */
   public onUserAction(): Observable<Message>
   {
     return new Observable<UserAction>(observer => {
-      this.socket.on('user_action', (data: UserAction) => {console.log(data);observer.next(data)});
+      this.socket.on('user_action', (data: UserAction) => observer.next(data));
     });
   }
 }

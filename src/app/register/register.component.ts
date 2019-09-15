@@ -35,17 +35,22 @@ export class RegisterComponent implements OnInit {
       this.items = this.user_service.getUserAttributes(this.user);
     }
 
+    /**
+     * @description Submit register with user information
+     */
     public submitRegister(): void
     {
       this.auth_service.register(this.user).subscribe(data =>
         {
           if (data.status == 'Success')
           {
+            // If registration is succesfull, navigate page to login 
             console.log("Registered");
             this.router.navigate(['/login']);
           }
           else
           {
+            // Show error message if user is not registered
             this.error_msg = data.message;
             console.log(data.message);
           }

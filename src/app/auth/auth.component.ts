@@ -28,6 +28,9 @@ export class AuthComponent implements OnInit
     this.error_msg = "";
   }
 
+  /**
+   * @description Submit user ınformation to login
+   */
   public submitLogin(): void
   {
     this.error_msg = "";
@@ -46,6 +49,9 @@ export class AuthComponent implements OnInit
       })
   }
 
+  /**
+   * @description Navigate page to register page
+   */
   public register(): void
   {
     this.router.navigateByUrl("/register");
